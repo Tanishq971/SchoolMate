@@ -1,0 +1,196 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id       String @id @default(uuid())
+  username String @unique
+  name     String
+}
+
+model Student {
+  id         String  @id @default(uuid())
+  username   String  @unique
+  firstname  String
+  lastname   String
+  age        Int
+  address    String
+  image      String?
+  phone      String?
+  bloodType  String
+  sex        StudentSex
+  createdAt  DateTime @default(now())
+  parentId   String
+  parent     Parent   @relation(fields: [parentId], references: [id])
+  classId    Int
+  class      Class    @relation(fields: [classId], references: [id])
+  gradeId    Int
+  grade      Grade    @relation(fields: [gradeId], references: [id])
+  exams      Exam[]
+  attendences Attendance[]
+  results    Result[]
+}
+
+model Parent {
+  id        String   @id @default(uuid())
+  username  String   @unique
+  firstname String
+  lastname  String
+  email     String?
+  phone     String
+  address   String
+  image     String?
+  students  Student[]
+}
+
+model Teacher {
+  id        String  @id @default(uuid())
+  username  String  @unique
+  firstname String
+  lastname  String
+  email     String?
+  phone     String
+  address   String
+  image     String?
+  sex       StudentSex
+  createdAt DateTime @default(now())
+  subjects  Subject[]
+  classes   Class[]
+  lessons   Lesson[]
+  exams     Exam[]
+}
+
+model Subject {
+  id       Int       @id @default(autoincrement())
+  name     String
+  teachers Teacher[]
+  lessons  Lesson[]
+}
+
+model Grade {
+  id       Int      @id @default(autoincrement())
+  name     String   @unique
+  students Student[]
+  classes  Class[]
+}
+
+model Class {
+  id              Int      @id @default(autoincrement())
+  name           String    @unique
+  totalStudents  Int
+  lessons        Lesson[]
+  classteacherId String
+  classteacher   Teacher   @relation(fields: [classteacherId], references: [id])
+  students       Student[]
+  gradeId        Int
+  grade          Grade     @relation(fields: [gradeId], references: [id])
+}
+
+model Lesson {
+  id         Int      @id @default(autoincrement())
+  days       Days
+  startTime  DateTime
+  endTime    DateTime
+  subjectId  Int
+  subject    Subject  @relation(fields: [subjectId], references: [id])
+  classId    Int
+  class      Class    @relation(fields: [classId], references: [id])
+  teacherId  String
+  teacher    Teacher  @relation(fields: [teacherId], references: [id])
+  exams      Exam[]
+  assignments Assignment[]
+  attendences Attendance[]
+}
+
+model Exam {
+  id         Int       @id @default(autoincrement())
+  title      String
+  date       DateTime
+  startTime  DateTime
+  endTime    DateTime
+  teacherId  String
+  teacher    Teacher   @relation(fields: [teacherId], references: [id])
+  students   Student[]
+  lessonId   Int
+  lesson     Lesson    @relation(fields: [lessonId], references: [id])
+  results    Result[]
+}
+
+model Assignment {
+  id        Int       @id @default(autoincrement())
+  title     String
+  startTime DateTime
+  endTime   DateTime
+  lessonId  Int
+  lesson    Lesson    @relation(fields: [lessonId], references: [id])
+  result    Result[]
+}
+
+model Result {
+  id           Int        @id @default(autoincrement())
+  score        Int
+  examId       Int?
+  exam         Exam?      @relation(fields: [examId], references: [id])
+  studentId    String
+  assignmentId Int?
+  assignment   Assignment? @relation(fields: [assignmentId], references: [id])
+  student      Student    @relation(fields: [studentId], references: [id])
+}
+
+model Attendance {
+  id         Int     @id @default(autoincrement())
+  studentId  String
+  student    Student @relation(fields: [studentId], references: [id])
+  lessonId   Int
+  lesson     Lesson  @relation(fields: [lessonId], references: [id])
+  present    Boolean
+}
+
+model Announcement {
+  id      Int     @id @default(autoincrement())
+  title   String
+  content String
+  Date    DateTime
+}
+
+enum StudentSex {
+  MALE
+  FEMALE
+}
+
+enum Days {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
+
+enum AllGrades {
+  NURSERY
+  LKG
+  UKG
+  FIRST
+  SECOND
+  THIRD
+  FOURTH
+  FIFTH
+  SIXTH
+  SEVENTH
+  EIGHTH
+  NINTH
+  TENTH
+  ELEVENTH_SCIENCE
+  ELEVENTH_COMMERCE
+  ELEVENTH_ARTS
+  TWELFTH_SCIENCE
+  TWELFTH_COMMERCE
+  TWELFTH_ARTS
+}
