@@ -1,7 +1,7 @@
 export const SidebarItems =  [
     {
       label: "Home",
-      url: "/",
+      url: "/admin",
       visible: ["admin", "teacher", "student", "parent"],
     },
     {

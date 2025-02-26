@@ -87,8 +87,8 @@ model Class {
   classteacherId String
   classteacher   Teacher   @relation(fields: [classteacherId], references: [id])
   students       Student[]
-  gradeId        Int
-  grade          Grade     @relation(fields: [gradeId], references: [id])
+  gradeId        Int?
+  grade          Grade?     @relation(fields: [gradeId], references: [id])
 }
 
 model Lesson {
