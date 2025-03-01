@@ -53,6 +53,7 @@ model Teacher {
   username  String  @unique
   firstname String
   lastname  String
+  password  String  @default("123")
   email     String?
   phone     String
   address   String

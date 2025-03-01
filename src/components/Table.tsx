@@ -7,6 +7,8 @@ const Table = ({
   getRows: (item: any) => React.ReactNode;
   data: any[];
 }) => {
+
+  console.log(data)
   return (
     <table className="w-full bg-white border border-gray-200 rounded-lg">
       <thead>
