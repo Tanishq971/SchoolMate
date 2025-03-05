@@ -7,7 +7,6 @@ import AddStudentModal from "@/components/AddModel";
 
 
 const StudentListPage = async () => {
-  // Table columns definition
   const columns = [
     { header: "Name" },
     { header: "Student Id" },

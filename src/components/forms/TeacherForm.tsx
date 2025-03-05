@@ -25,7 +25,10 @@ const teacherSchema = z.object({
   sex: z.enum(["MALE", "FEMALE"], { message: "Please select a valid gender" }),
 });
 
-const AddTeacherForm = ({setIsOpen} :{setIsOpen:(value:boolean)=>void}) => {
+const AddTeacherForm = ({setIsOpen} :{setIsOpen:(value:boolean)=>void }) => {
+  
+ 
+ 
   const {
     register,
     handleSubmit,

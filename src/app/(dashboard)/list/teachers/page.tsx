@@ -3,7 +3,12 @@ import prisma from "@/lib/prisma";
 import Table from "@/components/Table";
 import AddStudentModal from "@/components/AddModel";
 import Link from "next/link";
-const TeacherListPage = async () => {
+import TableSearchBar from "@/components/TableSearchBar";
+import { Prisma } from "@prisma/client";
+const TeacherListPage = async ({searchParams}:{searchParams:{[key : string] : string | undefined}}) => {
+  const params = await searchParams.q
+  console.log(params);
+
   const teacher = await prisma.teacher.findMany({
     include: {
       classes: true,
@@ -55,12 +60,30 @@ const TeacherListPage = async () => {
       )}
     </tr>
   );
+  
+
+
+  const query: Prisma.TeacherWhereInput = {};
+  if(searchParams.q){
+    const nameParts = searchParams.q.trim().split(" ");
+    if(nameParts.length === 1){
+      query.OR = [
+        {firstname:}
+      ]
+    }
+  }
+
+
+
+
 
   return (
     <div className="w-full h-full flex flex-col">
       <div className="bg-white p-3 border-b border-gray-200 flex items-center justify-between">
         <h2 className="text-lg font-medium text-gray-700">Student</h2>
+        <TableSearchBar></TableSearchBar>
         <AddStudentModal type="teacher" />
+
       </div>
 
       <div className="flex-1 overflow-x-auto">
